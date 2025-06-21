@@ -5,6 +5,8 @@ import {
   getPlanProcedures,
   getProcedures,
   getUsers,
+  addUserToProcedurePlan,
+  removeUserFromProcedurePlan
 } from "../../api/api";
 import Layout from '../Layout/Layout';
 import ProcedureItem from "./ProcedureItem/ProcedureItem";
@@ -51,6 +53,19 @@ const Plan = () => {
     });
   };
 
+  const handleAddUserToProcedurePlan = async (procedure,user) => {
+    await addUserToProcedurePlan(id, procedure.procedureId,user);
+    var planProcedures = await getPlanProcedures(id);
+    setPlanProcedures(planProcedures);
+  };
+
+  const handleRemoveUserFromProcedurePlan = async (procedure,user = null) =>{
+    await removeUserFromProcedurePlan(id, procedure.procedureId,user);
+    var planProcedures = await getPlanProcedures(id);
+    setPlanProcedures(planProcedures);
+  }
+
+
   return (
     <Layout>
       <div className="container pt-4">
@@ -84,6 +99,9 @@ const Plan = () => {
                           key={p.procedure.procedureId}
                           procedure={p.procedure}
                           users={users}
+                          planProcedure={p}
+                          handleAddUserToProcedurePlan={handleAddUserToProcedurePlan}
+                          handleRemoveUserFromProcedurePlan={handleRemoveUserFromProcedurePlan}
                         />
                       ))}
                     </div>

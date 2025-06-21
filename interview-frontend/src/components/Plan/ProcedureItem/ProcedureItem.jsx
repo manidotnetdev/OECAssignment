@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProcedureItem = ({ procedure, handleAddProcedureToPlan, planProcedures }) => {
+const ProcedureItem = ({ procedure, handleAddProcedureToPlan, planProcedures,handleAddUserToProcedurePlan }) => {
     return (
         <div className="py-2">
             <div className="form-check">
