@@ -1,4 +1,4 @@
-const api_url = "https://localhost:10011";
+const api_url = "http://localhost:10010";
 
 export const startPlan = async () => {
     const url = `${api_url}/Plan`;
