@@ -9,11 +9,5 @@ namespace RL.Backend.Commands
         public int ProcedureId { get; set; }
         public int? UserId { get; set; }
 
-        public RemoveUserFromProcedurePlanCommand(int planId, int procedureId, int? userId = null)
-        {
-            PlanId = planId;
-            ProcedureId = procedureId;
-            UserId = userId;
-        }
     }
 }

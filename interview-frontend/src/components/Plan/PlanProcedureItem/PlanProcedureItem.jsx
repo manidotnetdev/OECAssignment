@@ -13,36 +13,39 @@ const PlanProcedureItem = ({ procedure, users,planProcedure,handleAddUserToProce
         }));
     }
 
-    const [selectedUsers, setSelectedUsers] = useState(null);
+    const [selectedUsers, setSelectedUsers] = useState([]);
 
     useEffect(()=>{
        const userData= getUsersFromPlanProcedure();
        setSelectedUsers(userData);
-    },[]);
+    },[planProcedure]);
 
     const handleAssignUserToProcedure = (e) => {
-        setSelectedUsers(e);
-        const assignedUserIds = new Set(
-            planProcedure.planProcedureUsers.map(ppu => ppu.userId)
-          );
-        
-          const selectedUserIds = new Set(
-            e.map(ppu => ppu.value)
-          );
-          
-          const addedUser = e.filter(u => !assignedUserIds.has(u.value));
-          const removedUser = planProcedure.planProcedureUsers.filter(ppu => !selectedUserIds.has(ppu.userId));
-            if(addedUser && addedUser.length > 0) {
-                handleAddUserToProcedurePlan(planProcedure.procedure,addedUser[0].value);
-            }
-            if(removedUser && removedUser.length > 0){
-                handleRemoveUserFromProcedurePlan(planProcedure.procedure,removedUser[0].userId);
-            }
-            if(e.length == 0){
-                handleRemoveUserFromProcedurePlan(planProcedure.procedure);
-            }
+    setSelectedUsers(e || []);
 
-    };
+    const assignedUserIds = new Set(planProcedure?.planProcedureUsers?.map(ppu => ppu.userId));
+    const selectedUserIds = new Set((e || []).map(ppu => ppu.value));
+
+    const addedUsers = (e || []).filter(u => !assignedUserIds.has(u.value));
+    const removedUsers = planProcedure?.planProcedureUsers?.filter(ppu => !selectedUserIds.has(ppu.userId));
+
+    if (addedUsers?.length) {
+        addedUsers.forEach(user =>
+            handleAddUserToProcedurePlan(planProcedure.procedure, user.value)
+        );
+    }
+
+    if (e.length === 0) {
+        // Remove all users
+        handleRemoveUserFromProcedurePlan(planProcedure.procedure);
+    } else if (removedUsers?.length) {
+        // Remove specific user
+        removedUsers.forEach(user =>
+            handleRemoveUserFromProcedurePlan(planProcedure.procedure, user.userId)
+        );
+    }
+};
+
 
     return (
         <div className="py-2">
