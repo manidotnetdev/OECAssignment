@@ -10,10 +10,11 @@ namespace RL.Backend.Commands.Handlers.Plans;
 public class RemoveUserFromProcedurePlanCommandHandler : IRequestHandler<RemoveUserFromProcedurePlanCommand, ApiResponse<Unit>>
 {
     private readonly RLContext _context;
-
-    public RemoveUserFromProcedurePlanCommandHandler(RLContext context)
+    private readonly ILogger<RemoveUserFromProcedurePlanCommandHandler> _logger;
+    public RemoveUserFromProcedurePlanCommandHandler(RLContext context, ILogger<RemoveUserFromProcedurePlanCommandHandler> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<ApiResponse<Unit>> Handle(RemoveUserFromProcedurePlanCommand request, CancellationToken cancellationToken)
@@ -58,6 +59,8 @@ public class RemoveUserFromProcedurePlanCommandHandler : IRequestHandler<RemoveU
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error removing user from procedure plan. PlanId: {PlanId}, ProcedureId: {ProcedureId}, UserId: {UserId}",
+                request.PlanId, request.ProcedureId, request.UserId);
             return ApiResponse<Unit>.Fail(ex);
         }
     }
